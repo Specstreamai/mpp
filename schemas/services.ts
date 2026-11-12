@@ -11229,6 +11229,55 @@ export const services: ServiceDef[] = [
       },
     ],
   },
+
+  // ── SpecStream ───────────────────────────────────────────────────────
+  {
+    id: "specstream",
+    name: "SpecStream",
+    url: "https://specstream.ai",
+    serviceUrl: "https://api.specstream.ai",
+    description:
+      "Buy a list of live web data from a request in plain words: companies, people, places, filings, jobs, or products. Ask for 1 to 500 records; each comes back structured, with the source page of every value. The 402 names the most the list can cost, and only what the run used is captured when it ends.",
+    categories: ["data", "search", "web"],
+    integration: "first-party",
+    tags: [
+      "web-data",
+      "lists",
+      "research",
+      "enrichment",
+      "lead-generation",
+      "sources",
+    ],
+    status: "active",
+    docs: {
+      homepage: "https://specstream.ai/agents",
+      llmsTxt: "https://specstream.ai/llms.txt",
+      apiReference: "https://api.specstream.ai/openapi.json",
+    },
+    provider: { name: "SpecStream", url: "https://specstream.ai" },
+    realm: "api.specstream.ai",
+    intent: "charge",
+    payments: [STRIPE_PAYMENT],
+    endpoints: [
+      {
+        healthCheck: {
+          body: { request: "coffee shops in Narbonne, France", count: 1 },
+        },
+        route: "POST /v1/agent/lists",
+        desc: "Buy a list: pass the request in plain words and a count from 1 to 500; the 402 shows the reading, the columns, and the maximum",
+        dynamic: true,
+        amountHint: "$0.05 to $1 per result, card minimum $1",
+      },
+      {
+        route: "GET /v1/agent/lists",
+        desc: "Read the buying steps and the payment methods open now",
+      },
+      {
+        route: "GET /v1/agent/lists/:purchase_id",
+        desc: "Read a purchased list and its rows with the token from the 202",
+      },
+    ],
+  },
 ];
 
 export {
